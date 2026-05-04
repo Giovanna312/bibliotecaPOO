@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { LivrosService } from './livros.service';
+import { CreateLivroDto } from './dto/create-livro.dto'; // Importe o DTO de criação
 import { UpdateLivroDto } from './dto/update-livro.dto';
 
 @Controller('livros')
@@ -7,21 +8,9 @@ export class LivrosController {
   constructor(private readonly livrosService: LivrosService) {}
 
   @Post()
-  create(
-    @Body()
-    dados: {
-      titulo: string;
-      autor: string;
-      nome: string;
-      qtd_paginas: number;
-    },
-  ) {
-    return this.livrosService.create(
-      dados.titulo,
-      dados.autor,
-      dados.nome,
-      dados.qtd_paginas,
-    );
+  create(@Body() createLivroDto: CreateLivroDto) {
+    // Agora passamos o objeto completo para o service
+    return this.livrosService.create(createLivroDto);
   }
 
   @Get()
@@ -31,6 +20,7 @@ export class LivrosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    // O sinal de + converte a string do ID para número
     return this.livrosService.findOne(+id);
   }
 

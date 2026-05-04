@@ -5,36 +5,52 @@ import { Livro } from './entities/livro.entity';
 
 @Injectable()
 export class LivrosService {
-  //encapsulamento EHP
-  //Pilar POO: encapsulamento, herança e polimorfismo
-  private livros:Livro[] = []; 
+  // Pilar POO: Encapsulamento (private)
+  private livros: Livro[] = []; 
 
-
-
-  create(titulo: string, autor: string, nome: string, qtd_paginas: number) {
-    const novolivro = new Livro();
-    novolivro.id = this.livros.length++;
-    novolivro.titulo = titulo;
-    novolivro.autor = autor;
-    novolivro.nome = nome;
-    novolivro.qtd_paginas = qtd_paginas;
-    this.livros.push(novolivro);
-    return novolivro;
+  create(createLivroDto: CreateLivroDto) {
+    const novoLivro = new Livro();
+    
+    // Gera um ID baseado no tamanho atual + 1
+    novoLivro.id = this.livros.length + 1;
+    novoLivro.titulo = createLivroDto.titulo;
+    novoLivro.autor = createLivroDto.autor;
+    novoLivro.nome = createLivroDto.nome;
+    novoLivro.qtd_paginas = createLivroDto.qtd_paginas;
+    
+    this.livros.push(novoLivro);
+    return novoLivro;
   }
 
+  // AQUI ESTAVA O ERRO: Agora ele retorna a lista real!
   findAll() {
-    return `This action returns all livros`;
+    return this.livros;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} livro`;
+    return this.livros.find(livro => livro.id === id);
   }
 
   update(id: number, updateLivroDto: UpdateLivroDto) {
-    return `This action updates a #${id} livro`;
+    const livroIndex = this.livros.findIndex(livro => livro.id === id);
+    
+    if (livroIndex >= 0) {
+      // Mescla os dados antigos com os novos
+      this.livros[livroIndex] = { 
+        ...this.livros[livroIndex], 
+        ...updateLivroDto 
+      };
+      return this.livros[livroIndex];
+    }
+    return `Livro com ID ${id} não encontrado`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} livro`;
+    const livroIndex = this.livros.findIndex(livro => livro.id === id);
+    if (livroIndex >= 0) {
+      const removido = this.livros.splice(livroIndex, 1);
+      return removido[0];
+    }
+    return `Livro com ID ${id} não encontrado`;
   }
 }
