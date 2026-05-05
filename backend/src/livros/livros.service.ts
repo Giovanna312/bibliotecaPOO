@@ -34,10 +34,7 @@ export class LivrosService {
     
     if (Index >= 0) {
       
-      this.livros[Index] = { 
-        ...this.livros[Index], 
-        ...dados
-      };
+      this.livros[Index] = {...this.livros[Index],...dados};
       return this.livros[Index];
     }
     return `Livro com ID ${id} não encontrado`;

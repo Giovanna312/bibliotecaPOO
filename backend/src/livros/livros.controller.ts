@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { LivrosService } from './livros.service';
 import { CreateLivroDto } from './dto/create-livro.dto'; 
 import { UpdateLivroDto } from './dto/update-livro.dto';
+import { Livro } from './entities/livro.entity';
 
 @Controller('livros')
 export class LivrosController {
@@ -23,8 +24,8 @@ export class LivrosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLivroDto: UpdateLivroDto) {
-    return this.livrosService.update(+id, updateLivroDto);
+  update(@Param('id') id: string, @Body() dados: Partial<Livro>) {
+    return this.livrosService.update(+id, dados);
   }
 
   @Delete(':id')
