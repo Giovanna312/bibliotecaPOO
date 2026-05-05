@@ -11,7 +11,6 @@ export class LivrosService {
   create(createLivroDto: CreateLivroDto) {
     const novoLivro = new Livro();
     
-    // Gera um ID baseado no tamanho atual + 1
     novoLivro.id = this.livros.length + 1;
     novoLivro.titulo = createLivroDto.titulo;
     novoLivro.autor = createLivroDto.autor;
@@ -22,7 +21,6 @@ export class LivrosService {
     return novoLivro;
   }
 
-  // AQUI ESTAVA O ERRO: Agora ele retorna a lista real!
   findAll() {
     return this.livros;
   }
@@ -35,7 +33,7 @@ export class LivrosService {
     const livroIndex = this.livros.findIndex(livro => livro.id === id);
     
     if (livroIndex >= 0) {
-      // Mescla os dados antigos com os novos
+      
       this.livros[livroIndex] = { 
         ...this.livros[livroIndex], 
         ...updateLivroDto 
@@ -46,11 +44,11 @@ export class LivrosService {
   }
 
   remove(id: number) {
-    const livroIndex = this.livros.findIndex(livro => livro.id === id);
-    if (livroIndex >= 0) {
-      const removido = this.livros.splice(livroIndex, 1);
-      return removido[0];
+    const Index = this.livros.findIndex(livro => livro.id === id);
+    if (Index >= 0) {
+      this.livros.splice(Index, 1);
+      return `Livro com ID ${id} foi removido.`;
     }
-    return `Livro com ID ${id} não encontrado`;
+    return `Livro com ID ${id} não encontrado.`;
   }
 }
