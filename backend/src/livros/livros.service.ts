@@ -46,7 +46,7 @@ export class LivrosService {
   remove(id: number) {
     const Index = this.livros.findIndex(livro => livro.id === id);
     if (Index >= 0) {
-      this.livros.splice(Index, 1);
+      const removido = this.livros.splice(Index, 1);
       return `Livro com ID ${id} foi removido.`;
     }
     return `Livro com ID ${id} não encontrado.`;
