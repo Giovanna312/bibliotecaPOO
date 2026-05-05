@@ -29,16 +29,16 @@ export class LivrosService {
     return this.livros.find(livro => livro.id === id);
   }
 
-  update(id: number, updateLivroDto: UpdateLivroDto) {
-    const livroIndex = this.livros.findIndex(livro => livro.id === id);
+  update(id: number, dados:Partial<Livro>) {
+    const Index = this.livros.findIndex(livro => livro.id === id);
     
-    if (livroIndex >= 0) {
+    if (Index >= 0) {
       
-      this.livros[livroIndex] = { 
-        ...this.livros[livroIndex], 
-        ...updateLivroDto 
+      this.livros[Index] = { 
+        ...this.livros[Index], 
+        ...dados
       };
-      return this.livros[livroIndex];
+      return this.livros[Index];
     }
     return `Livro com ID ${id} não encontrado`;
   }
